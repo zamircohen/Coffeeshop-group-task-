@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Coffeeshop - Gruppuppgift i kursen Frontend 1 - Javascript</title>
+</head>
+
+<body>
+
+    <!-- Skapar en rullgardinsmeny för de olika kaffesorterna. Returnerar id = coffeeType -->
+    <label>Välj kaffesort</label>
+        <select id="coffeeType">
+            <option value="20" selected>Brygg kaffe - 20kr</option>
+            <option value="30">Cappucino - 30kr</option>
+            <option value="40">Latte - 40kr</option>
+        </select>
+
+    <!-- Skapar en ruta där användaren får välja antal kaffekoppar. Returnerar antal med id=amountOfCups -->
+    <label for="numberOfCoffees">Antal</label>
+    <input id="numberOfCoffees" type="number" min="0" max="10"/>
+    
+    
+    <!-- Skapar en knapp som anropar funktion onBuyButtonClick som finns i script taggen -->
+    <button onclick="onBuyButtonClick()">Köp</button>
+    
+    <br/>
+    <br/>
+
+    <!-- Skriver ut en statisk text och sedan fyller på med text när användaren gör ett köp -->
+    <div>
+        Du har handlat för <p id="totalSpent"></p>
+        Antal koppar sammanlagt: <p id="getTotalCoffeeCups"></p>
+        Medlemsskapsstatus: <p id="currentMembershipStatus"></p>
+    </div>
+
+    <hr/>
+
+    <h2>Dina transaktioner</h2>
+
+    <!-- <div id="root"></div>                                   Placerar root för HTML trädet här -->
+
+        <div>
+            <p id="message"></p>
+        </div>
+
+
+
+    <script>
+
+        // const root = document.getElementById("root")                            // Skapar en root för HTML trädet
+
+        const coffees = [
+            { name: "Bryggkaffe", price: 20 },
+            { name: "Cappucino", price: 30 },
+            { name: "Latte", price: 40 }
+        ]
+
+
+        class Customer {
+            constructor() {
+                this.transactions = []
+                this.coffeecups = []
+            }
+
+            addTransaction(amount) {
+                this.transactions.push(amount)
+            }
+            
+            
+            getTotalSpent() {
+                let sum = 0
+                this.transactions.forEach(transaction => {
+                    sum += transaction
+                })
+                return sum
+            }
+
+            addCoffeeCups(cups) {
+                this.coffeecups.push(cups)
+            }
+
+
+            getTotalCoffeeCups() {
+                let cup = 0
+                this.coffeecups.forEach(coffeecup => {
+                    cup += coffeecup
+                })    
+                return cup
+            }
+
+            getMembershipStatus(){
+                let membershipStatus = "Bronze" 
+
+                return membershipStatus
+            }
+
+            getMessage(amount, price, sum){
+                let message = `Du köpte ${amount}st kaffe för ${price} kr styck. Summa: ${sum}`
+                return message
+            }
+
+
+        }
+
+        const customer = new Customer()
+
+
+        function onBuyButtonClick() {
+            const input = document.getElementById("numberOfCoffees")
+            const pricePerCup = 50
+            const transactionValue = pricePerCup * input.value
+            const cupsValue = input.value
+
+
+
+            const wrapper = document.createElement("div")               // Skapar en wrapper 
+
+
+
+            customer.addTransaction(transactionValue)                       // Lägg in summan av köpet i funktionen som adderar ihop dem
+            customer.addCoffeeCups(cupsValue)                             // Lägger in antal kaffekoppar i funktionen som adderar ihop dem
+
+            console.log(customer.transactions)
+            console.log(customer.coffeecups)
+
+            const totalSpentParagraph = document.getElementById("totalSpent")
+            totalSpentParagraph.innerHTML = customer.getTotalSpent()
+
+            const membershipStatusParagraph = document.getElementById("currentMembershipStatus")   
+            membershipStatusParagraph.innerHTML = customer.getMembershipStatus()        
+
+            const messageParagraph = document.getElementById("message")
+            messageParagraph.innerHTML = customer.getMessage(input.value, pricePerCup, transactionValue)
+
+            const coffeeCupsParagraph = document.getElementById("getTotalCoffeeCups")
+            coffeeCupsParagraph.innerHTML = customer.getTotalCoffeeCups()
+
+
+
+
+            // wrapper.appendChild(messageParagraph)                                   // Anropar wrapper funktionen med variabel
+
+
+        }
+
+
+</script>
+
+
+
+
+</body>
+
+</html>
