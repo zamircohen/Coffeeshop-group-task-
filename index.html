@@ -1,3 +1,14 @@
+<!-- Detta är gruppuppgiften Coffeeshop i kursen Frontend1 - Javasript 
+
+    Skriven av: 
+    @Zamir Cohen
+    @Mattias Söderberg
+    @Hanna Tylna
+    @Kubilay Demirkiran
+
+-->
+
+
 <!DOCTYPE html>
 <html>
 
@@ -29,8 +40,9 @@
 
     <!-- Skriver ut en statisk text och sedan fyller på med text när användaren gör ett köp -->
     <div>
-        Du har handlat för <p id="totalSpent"></p>
-        Medlemsskapsstatus: <p id="currentMembershipStatus"></p>
+        Du har handlat för <span id="totalSpent"></span>kr
+        <br/>
+        Medlemsskapsstatus: <span id="currentMembershipStatus"></span>
     </div>
 
     <hr/>
@@ -41,23 +53,23 @@
             <p id="message"></p>
         </div>
 
-        <p id="demo"></p>
+        <p id="demo"></p>                                            <!-- Markerar var text vid varje klick ska dyka upp -->
 
 
 
     <script>
 
-        class Customer {
+        class Customer {                                            // Skapar en ny klass som heter Customer
             constructor() {
                 this.transactions = []
             }
 
-            addTransaction(amount) {
+            addTransaction(amount) {                                // Lägger in transaktionen i arrayen
                 this.transactions.push(amount)
             }
             
             
-            getTotalSpent() {
+            getTotalSpent() {                                       // Räknar ut summan av alla tal i arrayen och returnerar summan
                 let sum = 0
                 this.transactions.forEach(transaction => {
                     sum += transaction
@@ -66,13 +78,19 @@
             }
 
 
-            getMembershipStatus(){
-                let membershipStatus = "Bronze" 
-                return membershipStatus
+            getMembershipStatus(cups){                              // Hämtar ut medlemsskapsstatus beroende på hur många koppar man köpt
+                let membershipStatus = "Brons" 
+
+                if(cups >= 10 && cups < 30){
+                    return membershipStatus = "Silver"
+                }else if(cups > 30){
+                    return membershipStatus = "Gold"
+                }else return membershipStatus = "Brons"
             }
 
 
-            getMessage(amount, price, sum){
+                                                                                                        
+            getMessage(amount, price, sum){                                                                 // Skapar ett meddelande
                 let message = `Du köpte ${amount}st kaffe för ${price} kr styck. Summa: ${sum}`
                 return message
             }
@@ -82,35 +100,21 @@
 
         let totalCups = 0
 
-        // function getTotalCoffeeCups(total, cups) {         
-        //     totalCups = total + cups
-        //     return totalCups
-        // }
-
         const customer = new Customer()
 
         // Skapar en funktion för de saker som ska hända när användaren trycker på knappen köp
         function onBuyButtonClick() {
             const input = document.getElementById("numberOfCoffees")           // Hämtar antal koppar som användaren lagt in och döper det till input     
             const coffeeList = document.getElementById("coffeeType")           // Hämtar typen av kaffe som användaren valt och döper det till coffeeList
-            const pricePerCup = coffeeList.value                               // Hämtar värdet (pris per kopp) från ovanstående  
+            const pricePerCup = coffeeList.value * discount                    // Hämtar värdet (pris per kopp) från ovanstående  
             const transactionValue = pricePerCup * input.value                 // Räknar ut transaktions värdet
             const cupsValue = input.value                                      // Skapar en constant för att beräkna antalet beställda koppar 
-            totalCups += input.value
+            totalCups += parseInt(input.value)
                 
-            console.log(totalCups)
-            // console.log(input.value + cupsValue)
-            console.log(input.value)
-            console.log(cupsValue)
+    
+            customer.addTransaction(transactionValue)                          // Lägg in summan av köpet i funktionen som adderar ihop dem
             
-            console.log(`${totalCups} - Totala antal koppar kaffe `)
-
-
-            customer.addTransaction(transactionValue)                       // Lägg in summan av köpet i funktionen som adderar ihop dem
-            console.log(customer.transactions)
-
-            
-            const parent = document.getElementById("demo")
+            const parent = document.getElementById("demo")                     // Skapar roten samt grenar för de kommande texterna som skrivs ut
             const child = document.createElement("p")
 
 
@@ -120,7 +124,8 @@
 
             // Skriver ut aktuell medlemsstatus 
             const membershipStatusParagraph = document.getElementById("currentMembershipStatus")   
-            membershipStatusParagraph.innerHTML = customer.getMembershipStatus()        
+            membershipStatusParagraph.innerHTML = customer.getMembershipStatus(totalCups)        
+
 
             // Skriver ut en text med de parametrar som skapas när användaren väljer typ av kaffe och antal.
             const messageParagraph = document.getElementById("message")
