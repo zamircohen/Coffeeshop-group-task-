@@ -41,6 +41,8 @@
             <p id="message"></p>
         </div>
 
+        <p id="demo"></p>
+
 
 
     <script>
@@ -69,6 +71,7 @@
                 return membershipStatus
             }
 
+
             getMessage(amount, price, sum){
                 let message = `Du köpte ${amount}st kaffe för ${price} kr styck. Summa: ${sum}`
                 return message
@@ -77,11 +80,11 @@
 
         }
 
-        let totalCoffeeCups = 0
+        let totalCups = 0
 
         // function getTotalCoffeeCups(total, cups) {         
-        //     totalCoffeeCups = total + cups
-        //     return totalCoffeeCups
+        //     totalCups = total + cups
+        //     return totalCups
         // }
 
         const customer = new Customer()
@@ -93,22 +96,24 @@
             const pricePerCup = coffeeList.value                               // Hämtar värdet (pris per kopp) från ovanstående  
             const transactionValue = pricePerCup * input.value                 // Räknar ut transaktions värdet
             const cupsValue = input.value                                      // Skapar en constant för att beräkna antalet beställda koppar 
-            totalCoffeeCups += input.value                                        
-
-            // console.log(`${input.value} - Detta är input.value användaren skriver in för antal koppar`)
-            // console.log(`${cupsValue} - Detta är cupsValue`)
-            // console.log(`${totalCoffeeCups} - Detta är totalCoffeeCups`)
-
-            // getTotalCoffeeCups(totalCoffeeCups, cupsValue)
+            totalCups += input.value
+                
+            console.log(totalCups)
+            // console.log(input.value + cupsValue)
+            console.log(input.value)
+            console.log(cupsValue)
             
-            console.log(`${totalCoffeeCups} - Totala antal koppar kaffe `)
-
-
+            console.log(`${totalCups} - Totala antal koppar kaffe `)
 
 
             customer.addTransaction(transactionValue)                       // Lägg in summan av köpet i funktionen som adderar ihop dem
             console.log(customer.transactions)
+
             
+            const parent = document.getElementById("demo")
+            const child = document.createElement("p")
+
+
             // Skriver ut totalsumman för vad användaren köpt för under alla gånger
             const totalSpentParagraph = document.getElementById("totalSpent")
             totalSpentParagraph.innerHTML = customer.getTotalSpent()
@@ -119,15 +124,13 @@
 
             // Skriver ut en text med de parametrar som skapas när användaren väljer typ av kaffe och antal.
             const messageParagraph = document.getElementById("message")
-            messageParagraph.innerHTML = customer.getMessage(input.value, pricePerCup, transactionValue)
-
+            child.innerHTML = customer.getMessage(input.value, pricePerCup, transactionValue)
+            parent.appendChild(child)
            
         }
 
 
 </script>
-
-
 
 
 </body>
